@@ -70,11 +70,11 @@ while True:
     sys, gyro, accel, mag = bno.get_calibration_status()
     # Print everything out.
 
-    yaw = format(yaw, '3.2f')
-    roll = format(roll, '3.2f')
-    pitch = format(pitch, '3.2f')
+    # yaw = format(yaw, '3.2f')
+    # roll = format(roll, '3.2f')
+    # pitch = format(pitch, '3.2f')
 
-    print('yaw={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
+    print('yaw={0:3.2F} Roll={1:3.2F} Pitch={2:3.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
           yaw, roll, pitch, sys, gyro, accel, mag))
     # Other values you can optionally read:
     # Orientation as a quaternion:
