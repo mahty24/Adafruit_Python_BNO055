@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define SERVER_PORT htons(50010)
+#define SERVER_PORT htons(50007)
 
 int main() {
 
