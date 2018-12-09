@@ -79,15 +79,15 @@ while True:
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
     sys, gyro, accel, mag = bno.get_calibration_status()
 
-    # Client start
-    data = json.dumps({"r": roll, "p": pitch, "y": yaw})
-    s.send(data.encode())
-    print(str(s.recv(1000)))
-    # Client end
-
     yaw = format(yaw, '3.2f')
     roll = format(roll, '3.2f')
     pitch = format(pitch, '3.2f')
+
+    # Client start
+    data = json.dumps({"r": float(roll), "p": float(pitch), "y": float(yaw)})
+    s.send(data.encode())
+    print(str(s.recv(1000)))
+    # Client end
 
     # yawSize = yaw.size()
     # rollSize = roll.size()
