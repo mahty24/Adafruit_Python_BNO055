@@ -80,13 +80,15 @@ while True:
         count = 1
 
     if yawRef > 180:
-        yaw = yaw - yawRef
         if yaw < 180:
-            yaw = 360 + yaw
+            yaw = 360 + yaw - yawRef
+        else:
+            yaw = yaw - yawRef
     else:
-        yaw = yaw - yawRef
         if yaw > 180:
-            yaw = yaw - 360
+            yaw = yaw - 360 -yawRef
+        else:
+            yaw = yaw - yawRef    
 
     print('yaw={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
           yaw, roll, pitch, sys, gyro, accel, mag))

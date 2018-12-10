@@ -30,6 +30,26 @@ import json
 
 from Adafruit_BNO055 import BNO055
 
+def limit(num, minimum, maximum):
+    if num < minimum:
+        num = minimum
+    elif num > maximum:
+        num = maximum
+    return num
+
+def calc(p, n, val, ref):
+    if p:
+        if val<0:
+            temp = 360 + val -ref
+            return temp
+    elif n:
+        if val > 0:
+            temp = val - ref -360
+            return temp
+
+    temp = val - ref
+    return temp
+
 
 # Create and configure the BNO sensor connection.  Make sure only ONE of the
 # below 'bno = ...' lines is uncommented:
@@ -68,23 +88,68 @@ print('Gyroscope ID:       0x{0:02X}\n'.format(gyro))
 print('Reading BNO055 data, press Ctrl-C to quit...')
 
 # Client start
-HOST, PORT = "128.61.25.113", 50007
+HOST, PORT = "143.215.109.64", 50007
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 # Client end
+
+yawRef = 0
+pitchRef = 0
+count = 0
+
+loopPP = False
+loopPN = False
+loopYP = False
+loopYN = False
+
+sys, gyro, accel, mag = bno.get_calibration_status()
 
 while True:
     # Read the Euler angles for heading, roll, pitch (all in degrees).
     yaw, roll, pitch = bno.read_euler()
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
-    sys, gyro, accel, mag = bno.get_calibration_status()
+
+    yaw = yaw - 180
+
+    if count == 0:
+        yawRef = yaw
+        pitchRef = pitch
+        loopPN = pitchRef - 60 < -180
+        loopPP = pitchRef + 60 > 180
+        loopYN = yawRef - 85 < -180
+        loopYP = yawRef + 85 > 180
+        count = 1
+
+    fb = calc(loopPP,loopPN,pitch,pitchRef)
+    turn = calc(loopYP,loopYN,yaw,yawRef)
+
+    fb = limit(fb, -45, 45)
+    turn = limit(turn, -70, 70)
+
+    fb = (fb*80)/45
+    turn = (turn*60)/70
+
+    if fb >= 0:
+        if turn <= 0:
+            pwmA = fb + turn
+            pwmB = fb
+        else:
+            pwmA = fb
+            # pwmB = limit(fb - turn,-80,80)
+            pwmB = fb - turn
+    elif turn <= 0:
+        pwmA = fb - turn
+        pwmB = fb
+    else:
+        pwmA = fb
+        pwmB = fb + turn
 
     yaw = format(yaw, '3.2f')
     roll = format(roll, '3.2f')
     pitch = format(pitch, '3.2f')
 
     # Client start
-    data = json.dumps({"r": float(roll), "p": float(pitch), "y": float(yaw)})
+    data = json.dumps({"A": int(pwmA), "B": int(pwmB)})
     s.send(data.encode())
     print(str(s.recv(1000)))
     # Client end
@@ -93,8 +158,10 @@ while True:
     # rollSize = roll.size()
     # pitchSize = pitch.size()
 
-    print('yaw={0} Roll={1} Pitch={2}\t'.format(
+    print('yaw={0} Roll={1} Pitch={2}\n'.format(
           yaw, roll, pitch, ))
+    print('pwmA = {0} pwmB={1} pitchRef={2} yawRef={3}\n'.format(
+        int(pwmA),int(pwmB), pitchRef, yawRef))
     # Other values you can optionally read:
     # Orientation as a quaternion:
     #x,y,z,w = bno.read_quaterion()
