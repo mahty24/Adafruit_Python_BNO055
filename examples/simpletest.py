@@ -73,6 +73,7 @@ while True:
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
     sys, gyro, accel, mag = bno.get_calibration_status()
     # Print everything out.
+
     if count == 0:
         yawRef = yaw
         pitchRef = pitch
@@ -85,7 +86,7 @@ while True:
     else:
         yaw = yaw - yawRef
         if yaw > 180:
-            yaw = 360 - yaw
+            yaw = yaw - 360
 
     print('yaw={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
           yaw, roll, pitch, sys, gyro, accel, mag))
