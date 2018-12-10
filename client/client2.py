@@ -129,19 +129,20 @@ while True:
     fb = (fb*80)/45
     turn = (turn*60)/70
 
-    if fb > 0:
+    if fb >= 0:
         if turn <= 0:
             pwmA = fb + turn
             pwmB = fb
         else:
             pwmA = fb
-            pwmB = limit(fb - turn,-80,80)
+            # pwmB = limit(fb - turn,-80,80)
+            pwmB = fb - turn
     elif turn <= 0:
-        pwmA = limit(fb + turn,-80,80)
+        pwmA = fb - turn
         pwmB = fb
     else:
         pwmA = fb
-        pwmB = limit(fb - turn,-80,80)
+        pwmB = fb + turn
 
     yaw = format(yaw, '3.2f')
     roll = format(roll, '3.2f')
