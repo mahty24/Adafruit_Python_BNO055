@@ -16,7 +16,7 @@ using namespace std;
 int main() {
 
     char buffer[1000];
-    int n;
+    _ssize_t n;
 
     int serverSock=socket(AF_INET, SOCK_STREAM, 0);
 
@@ -51,24 +51,20 @@ int main() {
 
         string data(buffer);
 
-        unsigned long int rollIndex = data.find('r');
-        unsigned long int pitchIndex = data.find('p');
-        unsigned long int yawIndex = data.find('y');
+        unsigned long int aIndex = data.find('A');
+        unsigned long int bIndex = data.find('B');
         unsigned long int endIndex = data.find('}');
 
-        unsigned long  int rstart = rollIndex + 4;
-        unsigned long int yend = pitchIndex - 3;
-        unsigned long int pstart = pitchIndex + 4;
-        unsigned long int pend = rollIndex - 3;
-        unsigned long int ystart = yawIndex + 4;
-        unsigned long int rend = endIndex;
+        unsigned long  int astart = aIndex + 4;
+        unsigned long int aend = bIndex - 3;
+        unsigned long int bstart = bIndex + 4;
+        unsigned long int bend = endIndex;
 
-        string roll = data.substr(rstart,rend-rstart);
-        string pitch = data.substr(pstart,pend-pstart);
-        string yaw = data.substr(ystart,yend-ystart);
+        string pwmA = data.substr(astart,aend-astart);
+        string pwmB = data.substr(bstart,bend-bstart);
 
 //        cout << "Roll = " << droll << " pitch = " << dpitch << " yaw = " << dyaw<< "\n" << endl;
-        cout << "Roll = " << roll << " pitch = " << pitch << " yaw = " << yaw<< "\n" << endl;
+
 
         strcpy(buffer, "test");
         n = write(clientSock, buffer, strlen(buffer));

@@ -117,7 +117,7 @@ while True:
         pwmA = fb
         pwmB = fb + turn
 
-    yaw = format(yaw, '3.2i')
+    yaw = format(yaw, '3.2f')
     roll = format(roll, '3.2f')
     pitch = format(pitch, '3.2f')
 
