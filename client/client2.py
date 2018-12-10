@@ -88,7 +88,7 @@ print('Gyroscope ID:       0x{0:02X}\n'.format(gyro))
 print('Reading BNO055 data, press Ctrl-C to quit...')
 
 # Client start
-HOST, PORT = "128.61.25.113", 50007
+HOST, PORT = "143.215.109.64", 50007
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 # Client end
