@@ -37,6 +37,20 @@ def limit(num, minimum, maximum):
         num = maximum
     return num
 
+def calc(p, n, val, ref):
+    if p:
+        if val<0:
+            temp = 360 + val -ref
+            return temp
+    elif n:
+        if val > 0:
+            temp = val - ref -360
+            return temp
+    else:
+        temp = val - ref
+        return temp
+
+
 # Create and configure the BNO sensor connection.  Make sure only ONE of the
 # below 'bno = ...' lines is uncommented:
 # Raspberry Pi configuration with serial UART and RST connected to GPIO 18:
@@ -83,25 +97,36 @@ yawRef = 0
 pitchRef = 0
 count = 0
 
+loopPP = False
+loopPN = False
+loopYP = False
+loopYN = False
+
 while True:
     # Read the Euler angles for heading, roll, pitch (all in degrees).
     yaw, roll, pitch = bno.read_euler()
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
     sys, gyro, accel, mag = bno.get_calibration_status()
 
+    yaw = yaw - 180
+
     if count == 0:
         yawRef = yaw
         pitchRef = pitch
+        loopPN = pitchRef - 60 < -180
+        loopPP = pitchRef + 60 > 180
+        loopYN = yawRef - 85 < -180
+        loopYP = yawRef + 85 > 180
         count = 1
 
-    fb = pitch -pitchRef
-    turn = yaw - yawRef
+    fb = calc(loopPP,loopPN,pitch,pitchRef)
+    turn = calc(loopYP,loopYN,yaw,yawRef)
 
     fb = limit(fb, -45, 45)
     turn = limit(turn, -70, 70)
 
     fb = (fb*80)/45
-    turn = (turn*70)/60
+    turn = (turn*60)/70
 
     if fb > 0:
         if turn <= 0:
