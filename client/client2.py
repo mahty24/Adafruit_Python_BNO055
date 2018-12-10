@@ -102,11 +102,12 @@ loopPN = False
 loopYP = False
 loopYN = False
 
+sys, gyro, accel, mag = bno.get_calibration_status()
+
 while True:
     # Read the Euler angles for heading, roll, pitch (all in degrees).
     yaw, roll, pitch = bno.read_euler()
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
-    sys, gyro, accel, mag = bno.get_calibration_status()
 
     yaw = yaw - 180
 
