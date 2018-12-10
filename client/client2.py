@@ -137,11 +137,11 @@ while True:
             pwmA = fb
             pwmB = fb - turn
     elif turn <= 0:
-        pwmA = fb - turn
+        pwmA = fb + turn
         pwmB = fb
     else:
         pwmA = fb
-        pwmB = fb + turn
+        pwmB = fb - turn
 
     yaw = format(yaw, '3.2f')
     roll = format(roll, '3.2f')
