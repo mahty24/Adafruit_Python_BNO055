@@ -117,9 +117,9 @@ while True:
         pwmA = fb
         pwmB = fb + turn
 
-    # yaw = format(yaw, '3.2i')
-    # roll = format(roll, '3.2f')
-    # pitch = format(pitch, '3.2f')
+    yaw = format(yaw, '3.2i')
+    roll = format(roll, '3.2f')
+    pitch = format(pitch, '3.2f')
 
     # Client start
     data = json.dumps({"A": int(pwmA), "B": int(pwmB)})
@@ -131,8 +131,10 @@ while True:
     # rollSize = roll.size()
     # pitchSize = pitch.size()
 
-    print('yaw={0} Roll={1} Pitch={2}\t'.format(
+    print('yaw={0} Roll={1} Pitch={2}\n'.format(
           yaw, roll, pitch, ))
+    print('pwmA = {0} pwmB={1} pitchRef={2} yawRef={3}\n'.format(
+        pwmA, pwmB, pitchRef, yawRef))
     # Other values you can optionally read:
     # Orientation as a quaternion:
     #x,y,z,w = bno.read_quaterion()
