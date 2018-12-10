@@ -121,10 +121,15 @@ while True:
         count = 1
 
     fb = calc(loopPP,loopPN,pitch,pitchRef)
-    if yaw > 180:
+    if yawRef > 180:
+        if yaw < 180:
+            turn = yaw +360 - yawRef
+        else:
+            turn = yaw - yawRef
+    elif yaw > 180:
         turn = yaw - yawRef - 360
     else:
-        turn = yaw -yawRef
+        turn = yaw - yawRef
 
     fb = limit(fb, -45, 45)
     turn = limit(turn, -70, 70)
