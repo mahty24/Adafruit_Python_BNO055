@@ -82,16 +82,20 @@ while True:
     if yawRef > 180:
         if yaw < 180:
             yaw = 360 + yaw - yawRef
+	    print('ref greater 180 and yaw less than 180')
         else:
             yaw = yaw - yawRef
+	    print('ref greater 180 and yaw greater than 180')
     else:
         if yaw > 180:
-            yaw = yaw - 360 -yawRef
+            yaw = yaw - 360 - yawRef
+	    print('ref less 180 and yaw greater than 180')
         else:
-            yaw = yaw - yawRef    
+            yaw = yaw - yawRef
+	    print('ref less 180 and yaw less than 180')   
 
-    print('yaw={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-          yaw, roll, pitch, sys, gyro, accel, mag))
+    print('yaw={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tyawRef={3} pitchRef={4} Accel_cal={5} Mag_cal={6}'.format(
+          yaw, roll, pitch, yawRef, pitchRef))
     # Other values you can optionally read:
     # Orientation as a quaternion:
     #x,y,z,w = bno.read_quaterion()
