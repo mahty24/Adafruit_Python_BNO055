@@ -46,9 +46,9 @@ def calc(p, n, val, ref):
         if val > 0:
             temp = val - ref -360
             return temp
-    else:
-        temp = val - ref
-        return temp
+
+    temp = val - ref
+    return temp
 
 
 # Create and configure the BNO sensor connection.  Make sure only ONE of the
