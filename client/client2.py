@@ -109,27 +109,19 @@ while True:
     yaw, roll, pitch = bno.read_euler()
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
 
-    # yaw = yaw - 180
+    yaw = yaw - 180
 
     if count == 0:
         yawRef = yaw
         pitchRef = pitch
         loopPN = pitchRef - 60 < -180
         loopPP = pitchRef + 60 > 180
-        # loopYN = yawRef - 85 < -180
-        # loopYP = yawRef + 85 > 180
+        loopYN = yawRef - 85 < -180
+        loopYP = yawRef + 85 > 180
         count = 1
 
     fb = calc(loopPP,loopPN,pitch,pitchRef)
-    if yawRef > 180:
-        if yaw < 180:
-            turn = yaw +360 - yawRef
-        else:
-            turn = yaw - yawRef
-    elif yaw > 180:
-        turn = yaw - yawRef - 360
-    else:
-        turn = yaw - yawRef
+    turn = calc(loopYP,loopYN,yaw,yawRef)
 
     fb = limit(fb, -45, 45)
     turn = limit(turn, -70, 70)
