@@ -159,7 +159,7 @@ while True:
     print('yaw={0} Roll={1} Pitch={2}\n'.format(
           yaw, roll, pitch, ))
     print('pwmA = {0} pwmB={1} pitchRef={2} yawRef={3}\n'.format(
-        pwmA, pwmB, pitchRef, yawRef))
+        int(pwmA),int(pwmB), pitchRef, yawRef))
     # Other values you can optionally read:
     # Orientation as a quaternion:
     #x,y,z,w = bno.read_quaterion()
