@@ -30,12 +30,6 @@ import json
 
 from Adafruit_BNO055 import BNO055
 
-def limit(num, minimum, maximum):
-    if num < minimum:
-        num = minimum
-    elif num > maximum:
-        num = maximum
-    return num
 
 # Create and configure the BNO sensor connection.  Make sure only ONE of the
 # below 'bno = ...' lines is uncommented:
@@ -79,50 +73,18 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 # Client end
 
-yawRef = 0
-pitchRef = 0
-count = 0
-
 while True:
     # Read the Euler angles for heading, roll, pitch (all in degrees).
     yaw, roll, pitch = bno.read_euler()
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
     sys, gyro, accel, mag = bno.get_calibration_status()
 
-    if count == 0:
-        yawRef = yaw
-        pitchRef = pitch
-        count = 1
-
-    fb = pitch -pitchRef
-    turn = yaw - yawRef
-
-    fb = limit(fb, -45, 45)
-    turn = limit(turn, -70, 70)
-
-    fb = (fb*80)/45
-    turn = (turn*70)/60
-
-    if fb > 0:
-        if turn <= 0:
-            pwmA = fb + turn
-            pwmB = fb
-        else:
-            pwmA = fb
-            pwmB = fb - turn
-    elif turn <= 0:
-        pwmA = fb - turn
-        pwmB = fb
-    else:
-        pwmA = fb
-        pwmB = fb + turn
-
-    # yaw = format(yaw, '3.2i')
-    # roll = format(roll, '3.2f')
-    # pitch = format(pitch, '3.2f')
+    yaw = format(yaw, '3.2f')
+    roll = format(roll, '3.2f')
+    pitch = format(pitch, '3.2f')
 
     # Client start
-    data = json.dumps({"A": int(pwmA), "B": int(pwmB)})
+    data = json.dumps({"r": float(roll), "p": float(pitch), "y": float(yaw)})
     s.send(data.encode())
     print(str(s.recv(1000)))
     # Client end
