@@ -79,6 +79,9 @@ while True:
         pitchRef = pitch
         count = 1
 
+    yawRaw = yaw
+    pitchRaw = pitch
+
     if yawRef > 180:
         if yaw < 180:
             yaw = 360 + yaw - yawRef
@@ -94,8 +97,8 @@ while True:
             yaw = yaw - yawRef
 	    print('ref less 180 and yaw less than 180\n')   
 
-    print('yaw={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tyawRef={3} pitchRef={4}'.format(
-          yaw, roll, pitch, yawRef, pitchRef))
+    print('yaw={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tyawRef={3:0.2f} pitchRef={4:0.2f} yawRef={5:0.2f} pitchRaw ={6:0.2f}'.format(
+          yaw, roll, pitch, yawRef, pitchRef, yawRaw, pitchRaw))
     # Other values you can optionally read:
     # Orientation as a quaternion:
     #x,y,z,w = bno.read_quaterion()
