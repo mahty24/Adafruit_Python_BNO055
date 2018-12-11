@@ -106,12 +106,12 @@ while True:
             yaw = 360 + yaw - yawRef
         else:
             yaw = yaw - yawRef
-
     else:
         if yaw > 180:
-            yaw = yaw - 360 -yawRef
+            yaw = yaw - 360 - yawRef
         else:
             yaw = yaw - yawRef
+
 
     fb = limit(pitch, -45, 45)
     turn = limit(yaw, -70, 70)
